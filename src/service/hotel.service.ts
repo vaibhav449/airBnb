@@ -1,8 +1,12 @@
-import { type Request,type Response } from "express"
-import { createHotel } from "../repositories/hotel.repository";
-export const createHotelService= async (req:Request,res:Response)=>{
-    // here we write the buisness logic like blacklisting some area etc 
-    // we do not interact with the db here
-    const respose = await createHotel(req.body);
-    return respose;
+import { createHotel, getHotelById } from "../repositories/hotel.repository";
+import { createHotelData } from "../dto/hotel.dto";
+
+export const createHotelService = async (hotelData: createHotelData) => {
+    const response = await createHotel(hotelData);
+    return response;
+}
+
+export const getHotelByIdService = async (id: number) => {
+    const hotel = await getHotelById(id);
+    return hotel;
 }

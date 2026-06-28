@@ -25,3 +25,16 @@ export const getHotelById = async (id: number) => {
     }
     return response;
 };
+
+export const getAllHotel = async ()=>{
+    const allHotel=await Hotel.findAll({
+        where : {
+            deletedAt:null
+        }
+    });
+    if(!allHotel){
+        logger.error("No hotels found");
+        throw new Error("No hotels found");
+    }
+    return allHotel;
+}

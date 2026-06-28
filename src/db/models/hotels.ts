@@ -10,6 +10,7 @@ class Hotel extends Model<InferAttributes<Hotel>, InferCreationAttributes<Hotel>
   declare rating_count: CreationOptional<number>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
+  declare deletedAt: CreationOptional<Date>;
 }
 
 Hotel.init({
@@ -45,6 +46,11 @@ Hotel.init({
   updatedAt: {
     type: DataTypes.DATE,
     field: 'updated_at'
+  },
+  deletedAt:{
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue:null
   }
 }, {
   sequelize,
