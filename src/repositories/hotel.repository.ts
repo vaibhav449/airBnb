@@ -1,6 +1,7 @@
 import logger from "../config/logger.config";
 import Hotel from "../db/models/hotels";
 import { createHotelData } from "../dto/hotel.dto";
+import { NotFoundError } from "../utils/errors/app.error";
 
 
 export const createHotel = async (hotelData:createHotelData) => {
@@ -38,3 +39,33 @@ export const getAllHotel = async ()=>{
     }
     return allHotel;
 }
+
+// export const deleteHotel= async(id:number)=>{
+//     const hotelById= await Hotel.findByPk(id);
+//     if(!hotelById) {
+//         logger.error("hotel doesn't exsists");
+//         return;
+//     }
+//     hotelById.deletedAt=new Date();
+//     try {
+//         await hotelById.save();
+//         return true;
+//     }
+//     catch(e){
+//        throw new Error("couldn't delete it"); 
+//     }
+    
+// } this was a bad code as we have two trips to the database as first to find and then to delted(.save())
+
+export const deleteHotel=async (id:number)=>{
+    const [affectedRows] = await Hotel.update(
+        {deletedAt:new Date()},
+        {where:{id,deletedAt:null}}
+    )
+    if(affectedRows==0){
+        logger.error(`Hotel not found (or already deleted) with ID: ${id}`);
+        throw new NotFoundError(`Hotel not found with ID: ${id}`);
+    }
+    return true;
+}
+
